@@ -1,6 +1,7 @@
 # ClickHouse: A Database Case Study
 
 > An in-depth study of **ClickHouse**, an open-source, column-oriented OLAP database, covering its architecture, key features, use cases and limitations, with a comparison against **MySQL** and a hands-on demo.
+> Presented By: Dayitha Dileep (CB.SC.U4CSE25709) and Meera Sajiv (CB.SC.U4CSE25727)
 
 ---
 
