@@ -1,0 +1,117 @@
+
+CREATE DATABASE library_management;
+
+USE library_management;
+
+CREATE TABLE books
+(
+    book_id UInt32,
+    title String,
+    author String,
+    category String,
+    available_copies UInt32
+)
+ENGINE = MergeTree
+ORDER BY book_id;
+
+
+
+INSERT INTO books VALUES
+(1, 'The Alchemist', 'Paulo Coelho', 'Fiction', 5),
+(2, 'Wings of Fire', 'A. P. J. Abdul Kalam', 'Biography', 3),
+(3, 'Clean Code', 'Robert C. Martin', 'Technology', 4),
+(4, 'Atomic Habits', 'James Clear', 'Self Help', 6),
+(5, 'The Hobbit', 'J. R. R. Tolkien', 'Fantasy', 2);
+
+
+SELECT * FROM books ORDER BY book_id;
+
+CREATE TABLE members
+(
+    member_id UInt32,
+    member_name String,
+    department String
+)
+ENGINE = MergeTree
+ORDER BY member_id;
+
+INSERT INTO members VALUES
+(101, 'Ananya', 'CSE'),
+(102, 'Rahul', 'ECE'),
+(103, 'Priya', 'CSE'),
+(104, 'Arjun', 'Mechanical'),
+(105, 'Sneha', 'EEE');
+
+CREATE TABLE borrowings
+(
+    borrowing_id UInt32,
+    member_id UInt32,
+    book_id UInt32,
+    borrow_date Date
+)
+ENGINE = MergeTree
+ORDER BY borrowing_id;
+
+INSERT INTO borrowings VALUES
+(1, 101, 1, '2026-10-20'),
+(2, 102, 3, '2026-10-21'),
+(3, 103, 2, '2026-10-22'),
+(4, 101, 4, '2026-10-23'),
+(5, 104, 3, '2026-10-24');
+
+ALTER TABLE books
+UPDATE available_copies = 6
+WHERE book_id = 3;
+
+
+SELECT * FROM books WHERE book_id = 3;
+
+
+
+
+ALTER TABLE books
+DELETE WHERE book_id = 5;
+
+
+SELECT * FROM books ORDER BY book_id;
+
+SELECT
+    m.member_name,
+    m.department,
+    b.title,
+    br.borrow_date
+FROM members AS m
+INNER JOIN borrowings AS br
+    ON m.member_id = br.member_id
+INNER JOIN book AS b
+    ON br.book_id = b.book_Id
+ORDER BY br.borrowing_id;
+
+SELECT
+    m.member_name,
+    m.department,
+    br.borrowing_id,
+    br.book_id
+FROM members AS m
+LEFT JOIN borrowings AS br
+    ON m.member_id = br.member_id
+ORDER BY m.member_id;
+
+SELECT
+    b.title,
+    br.borrowing_id,
+    br.book_id
+FROM book AS b
+RIGHT JOIN borrowings AS br
+    ON b.book_Id = br.book_id
+ORDER BY br.borrowing_id;
+
+SELECT
+    b.book_Id,
+    b.title,
+    br.borrowing_id,
+    br.borrow_date
+FROM book AS b
+FULL OUTER JOIN borrowings AS br
+    ON b.book_Id = br.book_id
+ORDER BY b.book_Id;
